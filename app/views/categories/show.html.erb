@@ -1,0 +1,12 @@
+<dl>
+  <dt>Nome:</dt>
+  <dd><%= @category.name %></dd>
+  <dt>Diária:</dt>
+  <dd><%= number_to_currency @category.daily_rate %></dd>
+  <dt>Seguro:</dt>
+  <dd><%= number_to_currency @category.car_insurance %></dd>
+  <dt>Seguro de terceiros:</dt>
+  <dd><%= number_to_currency @category.third_party_insurance %></dd>
+</dl>
+
+<%= link_to 'Editar', edit_category_path(@category) %>
