@@ -17,13 +17,13 @@ describe 'Cars Management' do
       expect(json[:subsidiary_id]).to eq(car.subsidiary_id)
     end
 
-    xit 'model not found' do
+    it 'model not found' do
       get api_v1_car_path(id: 999)
       expect(response).to have_http_status(:not_found)
     end
   end
 
-  context 'index' do
+  xcontext 'index' do
     it 'render correctly' do
        car = create_list(:car, 5)
 
@@ -31,6 +31,50 @@ describe 'Cars Management' do
        json = JSON.parse(response.body, symbolize_names: true)
 
        expect(json.first[:car_model_id])
+    end
+  end
+
+  context 'post' do
+    it 'created correctly' do
+      car_model = create(:car_model)
+      subsidiary = create(:subsidiary)
+   
+      post api_v1_cars_path, params: {
+                                      car: {car_km: 1, license_plate: "QWE", color: "black", 
+                                            car_model_id: car_model.id,
+                                            subsidiary_id: subsidiary.id
+                                            }
+                                      }
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to have_http_status(:ok)
+      expect(json[:car_km]).to eq(1)
+      expect(json[:license_plate]).to eq("QWE")
+      expect(json[:car_model_id]).to eq(car_model.id)
+      expect(json[:subsidiary_id]).to eq(subsidiary.id)
+      expect(json[:color]).to eq("black")
+    end
+
+    it 'not created successfully' do
+      post api_v1_cars_path, params: { car: {}}
+
+      expect(response).to have_http_status(412)
+    end
+
+    xit 'not send mandatory fields' do
+      car_model = create(:car_model)
+      subsidiary = create(:subsidiary)
+
+      post api_v1_cars_path, params: {
+                                      car: {car_km: 1, license_plate: "QWE", color: "black", 
+                                            car_model_id: car_model.id, subsidiary_id: nil
+                                            }
+                                      }
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      expect(response).to have_http_status(412)
+      expect(json[:car_km]).to eq(1)
+      expect(json[:license_plate]).to eq("QWE")
     end
   end
 end
