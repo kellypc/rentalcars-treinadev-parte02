@@ -26,6 +26,10 @@ class CategoriesController < ApplicationController
     @category = Category.find(params[:id])
   end
 
+  def edit
+    @category = Category.find(params[:id]) 
+  end
+
 
   private
 

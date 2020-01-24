@@ -61,7 +61,7 @@ describe 'Cars Management' do
       expect(response).to have_http_status(412)
     end
 
-    xit 'not send mandatory fields' do
+    it 'not send mandatory fields' do
       car_model = create(:car_model)
       subsidiary = create(:subsidiary)
 
@@ -73,8 +73,19 @@ describe 'Cars Management' do
       json = JSON.parse(response.body, symbolize_names: true)
 
       expect(response).to have_http_status(412)
-      expect(json[:car_km]).to eq(1)
-      expect(json[:license_plate]).to eq("QWE")
+      expect(json[:message]).to include('Filial é obrigatório(a)')
+    end
+  end
+
+  context 'delete' do
+    it 'delete correctly' do
+      car = create(:car)
+      
+      delete api_v1_car_path(car)
+      json = JSON.parse(response.body, symbolize_names: true)
+      
+      expect(response).to have_http_status(200)
+      expect(json[:message]).to include('Carro excluido com sucesso')
     end
   end
 end

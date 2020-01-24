@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-xfeature 'Admin edit car category' do
+feature 'Admin edit car category' do
   scenario 'successfully' do
     user = create(:user, role: :admin)
     Category.create!(name: "A", daily_rate: 50.00, car_insurance: 25.00,
@@ -10,12 +10,11 @@ xfeature 'Admin edit car category' do
 
     visit root_path
     click_on "Categorias de carro"
-    click_on "A"
     click_on "Editar"
     fill_in "Nome", with: "B"
     fill_in "Diária", with: 100.00
-    fill_in "Seguro", with: 55.00
-    fill_in "Seguro de terceiros", with: 25.00
+    fill_in "Seguro padrão do carro", with: 55.00
+    fill_in "Seguro padrão contra terceiros", with: 25.00
     click_on "Atualizar categoria"
 
     expect(page).to have_content("Dados atualizados com sucesso")

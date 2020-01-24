@@ -17,7 +17,15 @@ class Api::V1::CarsController < Api::V1::ApiController
         if @car.valid?
           save!
           render json: @car
+        else
+          render json: {"message": @car.errors.full_messages}, status: 412
         end
     end
+  end
+
+  def destroy
+    @car = Car.find(params[:id])
+    @car.destroy
+    render json: {"message": "Carro excluido com sucesso"}
   end
 end
