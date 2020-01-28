@@ -66,4 +66,41 @@ feature 'User register individual client' do
 
     expect(current_path).to eq new_user_session_path
   end
+
+  scenario 'and must be send a email' do
+    user = create(:user, role: :user)
+    mailer_spy = class_spy(ClientMailer)
+    stub_const('ClientMailer', mailer_spy)
+
+    login_as user, scope: :user
+    visit new_individual_client_path
+    fill_in 'Nome', with: 'Apolônio'
+    fill_in 'CPF', with: '632.254.740-29'
+    fill_in 'E-mail', with: 'apolonio@email.com'
+    fill_in 'Logradouro', with: 'Vila do Chaves'
+    fill_in 'Número', with: '71'
+    fill_in 'Complemento', with: 'Dentro do barril'
+    fill_in 'Bairro', with: 'México'
+    fill_in 'Cidade', with: 'São Paulo'
+    fill_in 'Estado', with: 'SP'
+    click_on 'Enviar'
+    
+    client = Client.last
+    expect(ClientMailer).to have_received(:welcome)
+  end
 end
+=begin
+    mailer_spy = class_spy(RentalMailer)
+    stub_const('RentalMailer', mailer_spy)
+    login_as user, scope: :user
+    visit root_path
+    click_on 'Locações'
+    click_on 'Agendar locação'
+    find(:css, '.start_date').set('3000-01-04')
+    find(:css, '.end_date').set('3000-01-07')
+    find(:css, '#inputGroupSelect01').set('Claudionor')
+    find(:css, '#inputGroupSelect02').set('A')
+    click_on 'Agendar'
+    rental = Rental.last
+    expect(RentalMailer).to have_received(:confirm).with(rental.id)
+=end
