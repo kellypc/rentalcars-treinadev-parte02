@@ -55,6 +55,18 @@ describe 'Cars Management' do
       expect(json[:color]).to eq("black")
     end
 
+    it 'upload car image' do
+      car_model = create(:car_model)
+      subsidiary = create(:subsidiary)
+   
+      post api_v1_cars_path, params: {
+                                      car: {car_km: 1, license_plate: "QWE", color: "black", 
+                                            car_model_id: car_model.id,
+                                            subsidiary_id: subsidiary.id
+                                            }
+                                      }
+    end
+
     it 'not created successfully' do
       post api_v1_cars_path, params: { car: {}}
 

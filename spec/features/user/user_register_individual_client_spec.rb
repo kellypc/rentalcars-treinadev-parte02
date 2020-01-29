@@ -86,21 +86,6 @@ feature 'User register individual client' do
     click_on 'Enviar'
     
     client = Client.last
-    expect(ClientMailer).to have_received(:welcome)
+    expect(ClientMailer).to have_received(:welcome).with(client.id)
   end
 end
-=begin
-    mailer_spy = class_spy(RentalMailer)
-    stub_const('RentalMailer', mailer_spy)
-    login_as user, scope: :user
-    visit root_path
-    click_on 'Locações'
-    click_on 'Agendar locação'
-    find(:css, '.start_date').set('3000-01-04')
-    find(:css, '.end_date').set('3000-01-07')
-    find(:css, '#inputGroupSelect01').set('Claudionor')
-    find(:css, '#inputGroupSelect02').set('A')
-    click_on 'Agendar'
-    rental = Rental.last
-    expect(RentalMailer).to have_received(:confirm).with(rental.id)
-=end
