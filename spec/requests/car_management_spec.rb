@@ -64,7 +64,16 @@ describe 'Cars Management' do
                                             car_model_id: car_model.id,
                                             subsidiary_id: subsidiary.id
                                             }
+                                        
                                       }
+
+      @car = Car.last
+    
+      @car.avatar.attach(
+        io: File.open('./spec/support/car_image.jpeg'),
+        filename: 'car_image.jpeg',
+        content_type: 'application/jpeg'
+      )
     end
 
     it 'not created successfully' do

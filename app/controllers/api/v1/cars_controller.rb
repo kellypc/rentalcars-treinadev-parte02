@@ -15,7 +15,7 @@ class Api::V1::CarsController < Api::V1::ApiController
       @car = Car.new(params.require(:car).permit(:car_km, :license_plate, :color,
                                                 :car_model_id, :subsidiary_id))
         if @car.valid?
-          save!
+          @car.save!
           render json: @car
         else
           render json: {"message": @car.errors.full_messages}, status: 412
